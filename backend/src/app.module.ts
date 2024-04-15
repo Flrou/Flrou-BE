@@ -7,6 +7,11 @@ import { UserModule } from './user/user.module';
 import { UserController } from './user/user.con';
 import { UserRepository } from './user/user.repo';
 import { UserService } from './user/user.service';
+import { Chat } from './chat/chat.entity';
+import { ChatModule } from './chat/chat.module';
+import { ChatController } from './chat/chat.con';
+import { ChatRepository } from './chat/chat.repo';
+import { ChatService } from './chat/chat.service';
 
 @Module({
   imports: [
@@ -23,13 +28,13 @@ import { UserService } from './user/user.service';
       username : process.env.DB_USERNAME,
       password : process.env.DB_PASSWORD,
       database : process.env.DB_NAME,
-      models : [User],
+      models : [User, Chat],
       synchronize : true, // 처음 table 생성한 뒤에는 false로 변경
       autoLoadModels: true,
     }),
-    User, UserModule,
+    User, UserModule, Chat, ChatModule
   ],
-  controllers: [UserController],
-  providers: [UserRepository, UserService],
+  controllers: [UserController, ChatController],
+  providers: [UserRepository, UserService, ChatRepository, ChatService],
 })
 export class AppModule {}

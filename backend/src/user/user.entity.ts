@@ -1,4 +1,5 @@
 import { AutoIncrement, Column, DataType, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Chat } from "src/chat/chat.entity";
 
 @Table({timestamps : true})
 export class User extends Model {
@@ -17,6 +18,6 @@ export class User extends Model {
     nickname: string;
 
     // 유저가 가지고 있는 TBA
-    // @HasMany(() => TBA, { foreignKey: 'user_id', as: 'userTBA' })
-    // tba: TBA[];
+    @HasMany(() => Chat, { foreignKey: 'user_id', as: 'userChat' })
+    chat: Chat[];
 }
