@@ -13,6 +13,11 @@ import { ChatController } from './chat/chat.con';
 import { ChatRepository } from './chat/chat.repo';
 import { ChatService } from './chat/chat.service';
 import { GptService } from './gpt/gpt.service';
+import { Calendar } from './calendar/calendar.entity';
+import { CalendarModule } from './calendar/calendar.module';
+import { CalendarController } from './calendar/calendar.con';
+import { CalendarRepository } from './calendar/calendar.repo';
+import { CalendarService } from './calendar/calendar.service';
 
 @Module({
   imports: [
@@ -29,13 +34,17 @@ import { GptService } from './gpt/gpt.service';
       username : process.env.DB_USERNAME,
       password : process.env.DB_PASSWORD,
       database : process.env.DB_NAME,
-      models : [User, Chat],
+      models : [User, Chat, Calendar],
       synchronize : true, // 처음 table 생성한 뒤에는 false로 변경
       autoLoadModels: true,
     }),
-    User, UserModule, Chat, ChatModule
+    User, UserModule, Chat, ChatModule, Calendar, CalendarModule
   ],
-  controllers: [UserController, ChatController],
-  providers: [UserRepository, UserService, ChatRepository, ChatService, GptService],
+  controllers: [UserController, ChatController, CalendarController],
+  providers: [
+    UserRepository, UserService,
+    ChatRepository, ChatService, GptService,
+    CalendarRepository, CalendarService
+  ],
 })
 export class AppModule {}

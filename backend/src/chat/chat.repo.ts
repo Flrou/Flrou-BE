@@ -11,8 +11,9 @@ export class ChatRepository {
   ) {}
 
   // 전체 대화 반환
-  findAll(user_id: string): Promise<Chat[]> {
-    return this.chatModel.findAll({where : {user_id}});
+  async findAll(user_id: string): Promise<Chat[]> {
+    const user = await User.findOne({ where: { user_id } });
+    return this.chatModel.findAll({where : {user_id : user.id}});
   }
 
   // 채팅 추가
