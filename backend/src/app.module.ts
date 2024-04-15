@@ -12,6 +12,7 @@ import { ChatModule } from './chat/chat.module';
 import { ChatController } from './chat/chat.con';
 import { ChatRepository } from './chat/chat.repo';
 import { ChatService } from './chat/chat.service';
+import { GptService } from './gpt/gpt.service';
 
 @Module({
   imports: [
@@ -35,6 +36,6 @@ import { ChatService } from './chat/chat.service';
     User, UserModule, Chat, ChatModule
   ],
   controllers: [UserController, ChatController],
-  providers: [UserRepository, UserService, ChatRepository, ChatService],
+  providers: [UserRepository, UserService, ChatRepository, ChatService, GptService],
 })
 export class AppModule {}
