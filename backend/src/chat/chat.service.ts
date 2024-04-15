@@ -27,7 +27,8 @@ export class ChatService {
       }else if(mode == 1) {
         // 캘린더 입력 -> 일정 관련 대화인지 chk -> 정제화 -> 분류 함수 실행 -> 캘린더 테이블에 저장
         const refinedText = await this.gptService.refineText(content);
-        
+        // create
+        return refinedText;
 
       }else if(mode == 2) {
         // 투두 입력 -> 분류 함수 실행 -> 투두 테이블에 저장
