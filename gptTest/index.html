@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gpt Test</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+    <input type="text" id="content">
+    <button id="btn">전송</button>
+    <div id="answer"></div>
+</body>
+<script>
+    document.getElementById("btn").addEventListener("click", async () => {
+        let text = document.getElementById("content").value;
+        console.log(text);
+
+        const user_id = 'user123';
+        const content = text;
+        const mode = 0;
+        const alarm = null;
+
+        const response = await axios.post('http://localhost:3000/chat/send', {
+        user_id,
+        content,
+        mode,
+        alarm
+        });
+
+        const answerDiv = document.getElementById("answer");
+        const res = response.data.response || response.data.message || response.data.error
+        answerDiv.innerHTML = JSON.stringify(res);
+    })
+</script>
+</html>
