@@ -44,7 +44,9 @@ export class GptService {
             {
                 role: "user",
                 content: `
-                    ${prompt}를 'nn월 nn일 nn시 nn분에 어떤 할 일이 있어.' 이라는 문장으로 깔끔하게 정리해줘.
+                    ${prompt} 
+                    위의 입력을 아래와 같은 문장의 형식으로 출력해줘.
+                    {s_year}년 {s_month}월 {s_day}일 {s_hour}시 {s_minute}분부터 {e_hour}시 {e_minute}까지 {plan}가 있어.
                 ` },
             ],
             model: "gpt-3.5-turbo-0125",
@@ -59,3 +61,5 @@ export class GptService {
     }
   }
 }
+
+//s_year: 시작 연도, s_month: 시작 월, s_day: 시작 일, s_hour: 시작 시, s_minute: 시작 분, e_hour: 끝나는 시, e_minute: 끝나는 분, plan: 일정내용
