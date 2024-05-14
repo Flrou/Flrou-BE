@@ -28,4 +28,16 @@ export class CalendarRepository {
       }
     });
   }
+
+  // 일정 추가
+  async createPlan(
+    // user_id: string
+  ): Promise<string|null> {
+    // const user = await User.findOne({ where: { user_id } });
+    // return this.calendarModel.create({
+    //   plan, s_year, s_month, s_day, s_hour, s_minute,
+    //   f_year, f_month, f_day, f_hour, f_minute, user_id
+    // })
+    return
+  }
 }
