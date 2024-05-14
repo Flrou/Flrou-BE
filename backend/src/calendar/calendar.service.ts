@@ -13,6 +13,10 @@ export class CalendarService {
     }
 
     async findAllPlanByMonth(user_id: string, s_year: number, s_month: number): Promise<Calendar[]> {
-        return this.calendarRepository.findAllByMonth(user_id, s_year, s_month);
+      return this.calendarRepository.findAllByMonth(user_id, s_year, s_month);
+    }
+
+    async addPlan(): Promise<string|null> {
+      return this.calendarRepository.createPlan();
     }
 }

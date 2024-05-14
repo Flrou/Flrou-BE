@@ -38,14 +38,10 @@ export class Calendar extends Model {
     e_minute: number;
 
     // 알람
-    @Column({type: DataType.INTEGER, allowNull: false})
+    @Column({type: DataType.INTEGER, defaultValue: 15}) // 디폴트 15분
     alarm: number;
 
     // 누구의 일정인지
     @BelongsTo(() => User, {foreignKey : 'user_id'})
     user: User;
-
-    // 어느 채팅에서 입력했는지
-    @BelongsTo(() => Chat, {foreignKey : 'chat_id'})
-    chat: Chat;
 }

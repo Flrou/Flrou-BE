@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ChatRepository } from './chat.repo';
 import { Chat } from './chat.entity';
 import { GptService } from 'src/gpt/gpt.service';
+import { spawn } from 'child_process';
 
 @Injectable()
 export class ChatService {
@@ -14,7 +15,7 @@ export class ChatService {
       return this.chatRepository.findAll(user_id);
     }
 
-    async createChat(user_id: string, content: string, mode: number, alarm: number | null): Promise<string> {
+    async createChat(user_id: string, content: string, mode: number, alarm: number | null): Promise<any> {
       // 사용자 대화 저장
       await this.chatRepository.create(user_id, content, true);
 
@@ -25,13 +26,38 @@ export class ChatService {
         return generatedText;
 
       }else if(mode == 1) {
-        // 캘린더 입력 -> 일정 관련 대화인지 chk -> 정제화 -> 분류 함수 실행 -> 캘린더 테이블에 저장
-        const refinedText = await this.gptService.refineText(content);
-        // create
-        return refinedText;
+        // 문장 정제하기 (사용 X)
+        // const refinedText = await this.gptService.refineText(content);
+
+        // NER 모델 돌리기
+
+
+        // OKT 모델 돌리기
+        return new Promise<string>((resolve, reject) => {
+          const pythonProcess = spawn('python', ['src/model/okt.py', content]);
+    
+          pythonProcess.stdout.on('data', (data) => {
+            resolve(data.toString());
+          });
+    
+          pythonProcess.stderr.on('data', (data) => {
+            reject(data.toString());
+          });
+        });
 
       }else if(mode == 2) {
-        // 투두 입력 -> 분류 함수 실행 -> 투두 테이블에 저장
+        // 투두 리스트
+        return new Promise<string>((resolve, reject) => {
+          const pythonProcess = spawn('python', ['src/model/okt2.py', content]);
+    
+          pythonProcess.stdout.on('data', (data) => {
+            resolve(data.toString());
+          });
+    
+          pythonProcess.stderr.on('data', (data) => {
+            reject(data.toString());
+          });
+        });
       }
     }
 }
