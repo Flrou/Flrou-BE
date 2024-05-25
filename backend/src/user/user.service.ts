@@ -19,6 +19,13 @@ export class UserService {
       if(user) return 'duplicated user_id';
 
       const hash = bcrypt.hashSync(user_pw, 10); // 패스워드 10자리 해시화
+
+      // 아이디, 패스워드 모두 존재하면 카카오 로그인인 것으로 추정 -> 로그인 진행
+      if(hash) {
+        this.loginUser(user_id, user_pw);
+      }
+
+      // 유저 생성
       try {
         await this.userRepository.create({
           user_id: user_id,
