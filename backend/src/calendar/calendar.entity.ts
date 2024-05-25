@@ -1,5 +1,4 @@
-import { AutoIncrement, BelongsTo, Column, DataType, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
-import { Chat } from "src/chat/chat.entity";
+import { AutoIncrement, BelongsTo, Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
 import { User } from "src/user/user.entity";
 
 @Table({timestamps : true})
@@ -40,6 +39,10 @@ export class Calendar extends Model {
     // 알람
     @Column({type: DataType.INTEGER, defaultValue: 15}) // 디폴트 15분
     alarm: number;
+
+    // 완료 여부
+    @Column({type: DataType.BOOLEAN, defaultValue: false})
+    isDone: boolean;
 
     // 누구의 일정인지
     @BelongsTo(() => User, {foreignKey : 'user_id'})
