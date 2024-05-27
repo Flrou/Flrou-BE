@@ -5,6 +5,8 @@ import { GptService } from 'src/gpt/gpt.service';
 import { spawn } from 'child_process';
 import { TodoService } from 'src/todo/todo.service';
 
+import axios from "axios";
+
 @Injectable()
 export class ChatService {
   constructor(
@@ -29,70 +31,55 @@ export class ChatService {
         return generatedText;
 
       }else if(mode == 1) {
-        return new Promise<string>((resolve, reject) => {
-          const nerProcess = spawn('python', ['src/model/ner.py', content]);
-          let nerOutput = '';
 
-          nerProcess.stdout.on('data', (data) => {
-            nerOutput += data.toString();
-            console.log(nerOutput);
-            resolve(data.toString())
-          });
-      
-          nerProcess.stderr.on('data', (data) => {
-            reject(`ner.py error: ${data.toString()}`);
-          });
-      
-          nerProcess.on('close', (code) => {
-            if (code !== 0) {
-              reject(`ner.py process exited with code ${code}`);
-              return;
-            }
-          });
-        });
+        try {
+          const {data} = await axios.post('http://127.0.0.1:8000/ner', { content });
+          if(data[3] == null) {
+            data[3] = '오전';
+            data[9] = '오전'
+          } 
+          const plan = data.pop();
 
+          return new Promise<any>((resolve, reject) => {
+            const pythonProcess = spawn('python', ['src/model/okt.py', plan]);
 
-        // return new Promise<string>((resolve, reject) => {
-        //   // NER 모델 돌리기
-        //   const nerProcess = spawn('python', ['src/model/ner.py', content]);
-        //   let nerOutput = '';
+            pythonProcess.stdout.on('data', (okt_res) => {
+              let returnData = {
+                s_year: Number(data[0]),
+                s_month: Number(data[1]),
+                s_day: Number(data[2]),
+                s_ampm: data[3],
+                s_hour: Number(data[4]),
+                s_minute: Number(data[5]),
+                f_year: Number(data[6]),
+                f_month: Number(data[7]),
+                f_day: Number(data[8]),
+                f_ampm: data[9],
+                f_hour: Number(data[10]),
+                f_minute: Number(data[11]),
+                plan: ''
+              }
+              console.log(returnData)
+
+              if(data) {
+                returnData.plan = okt_res.toString();
+                console.log(returnData)
+                resolve(returnData);
+              }else {
+                returnData.plan = plan;
+                console.log(returnData)
+                resolve(returnData)
+              }
+            });
       
-        //   nerProcess.stdout.on('data', (data) => {
-        //     nerOutput += data.toString();
-        //   });
-      
-        //   nerProcess.stderr.on('data', (data) => {
-        //     reject(`ner.py error: ${data.toString()}`);
-        //   });
-      
-        //   nerProcess.on('close', (code) => {
-        //     if (code !== 0) {
-        //       reject(`ner.py process exited with code ${code}`);
-        //       return;
-        //     }
-      
-        //     // OKT 모델 돌리기
-        //     const pythonProcess = spawn('python', ['src/model/okt.py', nerOutput.trim()]);
-      
-        //     let oktOutput = '';
-      
-        //     pythonProcess.stdout.on('data', (data) => {
-        //       oktOutput += data.toString();
-        //     });
-      
-        //     pythonProcess.stderr.on('data', (data) => {
-        //       reject(`okt.py error: ${data.toString()}`);
-        //     });
-      
-        //     pythonProcess.on('close', (code) => {
-        //       if (code !== 0) {
-        //         reject(`okt.py process exited with code ${code}`);
-        //       } else {
-        //         resolve(oktOutput.trim());
-        //       }
-        //     });
-        //   });
-        // });
+            pythonProcess.stderr.on('data', (data) => {
+              reject(data.toString());
+            });
+          });
+        } catch (error) {
+          console.error('Error while processing text:', error);
+          throw 'failed';
+        }
 
       }else if(mode == 2) {
         // 투두 리스트
