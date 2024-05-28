@@ -18,12 +18,11 @@ export class ChatRepository {
 
   // 채팅 추가
   async create(user_id: string, content: string, isUser: boolean): Promise<void> {
-    // const user = await User.findOne({ where: { user_id } });
+    const user = await User.findOne({ where: { user_id } });
     // if (!user) {
     //   throw new Error(`${user_id} not found`);
     // }
     // await this.chatModel.create({ content, user_id: user.id, isUser });
-    const userId = 1;
-    await this.chatModel.create({ content, isUser, userId });
+    await this.chatModel.create({ content, isUser, userId : user.id });
   }
 }
