@@ -47,4 +47,10 @@ export class CalendarService {
     async destroy(plan_id: number): Promise<string|null> {
       return this.calendarRepository.destroy(plan_id);
     }
+
+
+
+    async findGraph(user_id: string, s_year: number, cur_month: number): Promise<string|null> {
+      return this.calendarRepository.findGraph(user_id, s_year, cur_month)
+    }
 }

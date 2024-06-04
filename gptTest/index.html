@@ -9,30 +9,42 @@
 
 </head>
 <body>
-    <input type="text" id="content">
-    <button id="btn">전송</button>
-    <div id="answer"></div>
+    <!-- gpt -->
+    <!-- <div>
+        <input type="text" id="content">
+        <button id="btn">전송</button>
+        <div id="answer"></div>
+    </div> -->
+    <!-- graph -->
+    <button id="graphBtn">그래프</button>
 </body>
 <script>
-    document.getElementById("btn").addEventListener("click", async () => {
-        let text = document.getElementById("content").value;
-        console.log(text);
+    // document.getElementById("btn").addEventListener("click", async () => {
+    //     let text = document.getElementById("content").value;
+    //     console.log(text);
 
-        const user_id = 'user123';
-        const content = text;
-        const mode = 1;
-        const alarm = 10;
+    //     const user_id = 'user123';
+    //     const content = text;
+    //     const mode = 1;
+    //     const alarm = 10;
 
-        const response = await axios.post('http://localhost:3000/chat/send', {
-        user_id,
-        content,
-        mode,
-        alarm
-        });
+    //     const response = await axios.post('http://localhost:3000/chat/send', {
+    //     user_id,
+    //     content,
+    //     mode,
+    //     alarm
+    //     });
 
-        const answerDiv = document.getElementById("answer");
-        const res = response.data.response || response.data.message || response.data.error
-        answerDiv.innerHTML = JSON.stringify(res);
-    })
+    //     const answerDiv = document.getElementById("answer");
+    //     const res = response.data.response || response.data.message || response.data.error
+    //     answerDiv.innerHTML = JSON.stringify(res);
+    // })
+
+    document.getElementById("graphBtn").addEventListener("click", async () => {
+        console.log('??')
+        const response = await axios.get('http://localhost:3000/plan/getGraph/sookmyung/2024/6');
+        console.log(response);
+    }) 
+
 </script>
 </html>
