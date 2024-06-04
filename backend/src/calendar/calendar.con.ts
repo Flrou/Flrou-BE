@@ -5,12 +5,6 @@ import { CalendarService } from './calendar.service';
 export class CalendarController {
   constructor(private readonly calendarService: CalendarService) {}
 
-  // 모든 일정 조회
-  // @Get('getAllPlan/:user_id')
-  // getAllPlan(@Param('user_id') user_id: string) {
-  //   return this.calendarService.findAll(user_id);
-  // }
-
   // 연별 일정 조회
   @Get('getPlanByYear/:user_id/:s_year')
   getPlanByYear(@Param('user_id') user_id: string, @Param('s_year') s_year: number) {
@@ -62,5 +56,12 @@ export class CalendarController {
   @Post('deletePlan')
   deletePlan(@Body('plan_id') plan_id: number) {
     return this.calendarService.destroy(plan_id);
+  }
+
+
+  // 그래프 관련
+  @Get('getGraph/:user_id/:s_year/:cur_month')
+  getGraph(@Param('user_id') user_id: string, @Param('s_year') s_year: number, @Param('cur_month') cur_month: number) {
+    return this.calendarService.findGraph(user_id, s_year, cur_month);
   }
 }

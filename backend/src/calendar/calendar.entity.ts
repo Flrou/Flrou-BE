@@ -37,11 +37,11 @@ export class Calendar extends Model {
     f_minute: number;
 
     // 알람
-    @Column({type: DataType.INTEGER, defaultValue: 15}) // 디폴트 15분
+    @Column({type: DataType.INTEGER, defaultValue: 0})
     alarm: number;
 
     // 색
-    @Column({type: DataType.INTEGER, defaultValue: 1}) // 디폴트 15분
+    @Column({type: DataType.INTEGER, defaultValue: 1})
     color: number;
 
     // 완료 여부
@@ -64,7 +64,14 @@ export class Calendar extends Model {
                 plan: '과제 제출',
                 s_year: 2024, s_month: 5, s_day: 30, s_hour: 17, s_minute: 0,
                 f_year: 2024, f_month: 5, f_day: 30, f_hour: 18, f_minute: 0,
-                userId: 1 });
+                userId: 1
+            });
+            await Calendar.create({
+                plan: '친구 저녁식사',
+                s_year: 2024, s_month: 5, s_day: 15, s_hour: 17, s_minute: 0,
+                f_year: 2024, f_month: 5, f_day: 15, f_hour: 18, f_minute: 0,
+                isDone: true, userId: 1
+            });
         }
     }
 }

@@ -17,6 +17,10 @@ export class User extends Model {
     @Column({type: DataType.STRING(20)}) // 카카오 로그인 시 없어도 됨
     nickname: string;
 
+    // 강제 알림 설정 여부
+    @Column({type: DataType.BOOLEAN, defaultValue: false})
+    force: boolean;
+
     // 유저가 가지고 있는 TBA
     @HasMany(() => Chat, { foreignKey: 'user_id', as: 'userChat' })
     chat: Chat[];
@@ -26,7 +30,7 @@ export class User extends Model {
     static async insertInitialData() {
         const count = await User.count();
         if (count === 0) {
-            await User.create({ user_id: '111', user_pw: '111', nickname: '111' });
+            await User.create({ user_id: 'sookmyung', user_pw: '123', nickname: '눈송이' });
         }
     }
 }

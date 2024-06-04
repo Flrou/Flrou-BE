@@ -84,4 +84,36 @@ export class CalendarRepository {
     const result = await Calendar.destroy({ where: { id: plan_id }});
     if (result === 0) return 'failed';
     return 'success';
-  }}
+  }
+
+
+    // 그래프 관련
+    async findGraph(user_id: string, s_year: number, cur_month: number): Promise<any> {
+      const user = await User.findOne({ where: { user_id } });
+      const arr = [];
+
+      for (let i = 1; i < cur_month; i++) {
+        const done = await this.calendarModel.count({
+          where: {
+            userId : user.id,
+            s_year: s_year,
+            s_month: i,
+            isDone: true
+          }
+        })
+        const notDone = await this.calendarModel.count({
+          where: {
+            userId : user.id,
+            s_year: s_year,
+            s_month: i,
+            isDone: false
+          }
+        })
+        arr.push([done, notDone])   
+      }
+
+      console.log(arr);
+
+      return arr;
+    }
+}
