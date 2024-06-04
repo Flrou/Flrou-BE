@@ -11,8 +11,8 @@ export class Chat extends Model {
     @Column({type: DataType.STRING(300), allowNull: false})
     content: string;
 
-    @Column({type: DataType.BOOLEAN})
-    isUser: boolean;
+    @Column({type: DataType.INTEGER})
+    isUser: number;
 
     @BelongsTo(() => User, {foreignKey : 'user_id'})
     user: User;

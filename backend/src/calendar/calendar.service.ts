@@ -48,9 +48,15 @@ export class CalendarService {
       return this.calendarRepository.destroy(plan_id);
     }
 
-
+    // --- graph
 
     async findGraph(user_id: string, s_year: number, cur_month: number): Promise<string|null> {
       return this.calendarRepository.findGraph(user_id, s_year, cur_month)
+    }
+
+    // --- force
+
+    async setForceAlarm(user_id: string, cur_year: number, cur_month: number, alarm: number): Promise<any> {
+      return this.calendarRepository.setForceAlarm(user_id, cur_year, cur_month, alarm);
     }
 }

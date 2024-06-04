@@ -21,13 +21,13 @@ export class ChatService {
 
     async createChat(user_id: string, content: string, mode: number, alarm: number | null): Promise<any> {
       // 사용자 대화 저장
-      await this.chatRepository.create(user_id, content, true);
+      await this.chatRepository.create(user_id, content, 0);
       console.log(mode);
 
       if(mode == 0) {
         // 일반대화 -> 일반 gpt
         const generatedText = await this.gptService.generateText(content);
-        await this.chatRepository.create(user_id, generatedText, false);
+        await this.chatRepository.create(user_id, generatedText, 1);
         return generatedText;
 
       }else if(mode == 1) {

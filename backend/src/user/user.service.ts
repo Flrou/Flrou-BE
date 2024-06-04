@@ -3,11 +3,14 @@ import { UserRepository } from './user.repo';
 import { User } from './user.entity';
 
 import * as bcrypt from 'bcrypt';
+import { CalendarService } from 'src/calendar/calendar.service';
 
 @Injectable()
 export class UserService {
   constructor(
-    private readonly userRepository: UserRepository) {}
+    private readonly userRepository: UserRepository,
+    private readonly calendarService: CalendarService,
+  ) {}
 
     async findAllUsers(): Promise<User[]> {
       return this.userRepository.findAll();
@@ -50,6 +53,22 @@ export class UserService {
         if(same) {
           return user; // 맞으면 유저 정보 반환
         }
+      }
+    }
+
+    async setForce(user_id: string, cur_year: number, cur_month: number, alarm: number): Promise<any> {
+      try {
+        // force 설정 (true/false)
+        const setting = await this.userRepository.setForce(user_id);
+        // 강제 알림
+        if(setting) { // force == true
+          await this.calendarService.setForceAlarm(user_id, cur_year, cur_month, alarm);
+        }else { // force == false
+          
+        }
+        return 'success';
+      } catch (error) {
+        return 'failed'
       }
     }
 }
