@@ -35,4 +35,11 @@ export class UserRepository {
     await this.userModel.update({ nickname: new_nickname }, { where: { user_id } });
     return "success";
   }
+
+  // 강제 알림 설정
+  async setForce(user_id: string,): Promise<any> {
+    const user = await this.findOneByUserId(user_id);
+    await this.userModel.update({ force : !user.force }, { where : { userId : user.id } })
+    return !user.force;
+  }
 }

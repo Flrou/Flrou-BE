@@ -87,33 +87,51 @@ export class CalendarRepository {
   }
 
 
-    // 그래프 관련
-    async findGraph(user_id: string, s_year: number, cur_month: number): Promise<any> {
-      const user = await User.findOne({ where: { user_id } });
-      const arr = [];
+  // 그래프 관련
+  async findGraph(user_id: string, s_year: number, cur_month: number): Promise<any> {
+    const user = await User.findOne({ where: { user_id } });
+    const arr = [];
 
-      for (let i = 1; i < cur_month; i++) {
-        const done = await this.calendarModel.count({
-          where: {
-            userId : user.id,
-            s_year: s_year,
-            s_month: i,
-            isDone: true
-          }
-        })
-        const notDone = await this.calendarModel.count({
-          where: {
-            userId : user.id,
-            s_year: s_year,
-            s_month: i,
-            isDone: false
-          }
-        })
-        arr.push([done, notDone])   
-      }
-
-      console.log(arr);
-
-      return arr;
+    for (let i = 1; i < cur_month; i++) {
+      const done = await this.calendarModel.count({
+        where: {
+          userId : user.id,
+          s_year: s_year,
+          s_month: i,
+          isDone: true
+        }
+      })
+      const notDone = await this.calendarModel.count({
+        where: {
+          userId : user.id,
+          s_year: s_year,
+          s_month: i,
+          isDone: false
+        }
+      })
+      arr.push([done, notDone])   
     }
+    return arr;
+  }
+
+  // 강제 알림 설정
+  async setForceAlarm(user_id: string, cur_year: number, cur_month: number, alarm: number): Promise<any> {
+    const user = await User.findOne({ where: { user_id } });
+    try {
+      await Calendar.update({
+        alarm : alarm
+      }, {
+        where : {
+          userId : user.id,
+          s_year : cur_year,
+          s_month : cur_month,
+        }
+      })
+      
+      return 'success';
+    } catch (error) {
+      console.log(error);
+      return 'failed';
+    }
+  }
 }
