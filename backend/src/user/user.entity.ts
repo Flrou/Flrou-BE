@@ -1,5 +1,6 @@
 import { AutoIncrement, Column, DataType, HasMany, Model, PrimaryKey, Table, AfterSync } from "sequelize-typescript";
 import { Chat } from "src/chat/chat.entity";
+import * as bcrypt from 'bcrypt';
 
 @Table({timestamps : true})
 export class User extends Model {
@@ -21,6 +22,10 @@ export class User extends Model {
     @Column({type: DataType.BOOLEAN, defaultValue: false})
     force: boolean;
 
+    // 디바이스 토큰 정보
+    @Column({type: DataType.STRING(500)})
+    device_token: string;
+
     // 유저가 가지고 있는 TBA
     @HasMany(() => Chat, { foreignKey: 'user_id', as: 'userChat' })
     chat: Chat[];
@@ -30,7 +35,8 @@ export class User extends Model {
     static async insertInitialData() {
         const count = await User.count();
         if (count === 0) {
-            await User.create({ user_id: 'sookmyung', user_pw: '123', nickname: '눈송이' });
+            const hash = bcrypt.hashSync('123', 10);
+            await User.create({ user_id: '123', user_pw: hash, nickname: '눈송이' });
         }
     }
 }
