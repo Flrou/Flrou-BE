@@ -42,4 +42,10 @@ export class UserRepository {
     await this.userModel.update({ force : !user.force }, { where : { userId : user.id } })
     return !user.force;
   }
+
+  // 디바이스 토큰 저장
+  async setDeviceToken(user_id: string, token: string): Promise<any> {
+    await this.userModel.update({ device_token : token }, { where : { user_id } });
+    return "success";
+  }
 }

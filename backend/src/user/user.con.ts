@@ -28,4 +28,10 @@ export class UserController {
   setForce(@Body('user_id') user_id: string, @Body('cur_year') cur_year: number, @Body('cur_month') cur_month: number, alarm: number) {
     return this.userService.setForce(user_id, cur_year, cur_month, alarm);
   }
+
+  // 디바이스 토큰 저장
+  @Post('setDeviceToken')
+  setDeviceToken(@Body('user_id') user_id: string, @Body('token') token: string) {
+    return this.userService.setDeviceToken(user_id, token);
+  }
 }

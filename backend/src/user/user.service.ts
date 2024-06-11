@@ -71,4 +71,13 @@ export class UserService {
         return 'failed'
       }
     }
+
+    async setDeviceToken(user_id: string, token: string): Promise<any> {
+      try {
+        const res = await this.userRepository.setDeviceToken(user_id, token);
+        return 'success';
+      } catch (error) {
+        return error;
+      }
+    }
 }
