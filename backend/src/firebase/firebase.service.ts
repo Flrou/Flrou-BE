@@ -3,16 +3,16 @@ import { admin, adminApp } from './firebase.config';
 import { Injectable, Logger } from '@nestjs/common';
 import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
-import { Cron } from '@nestjs/schedule';
+import { SchedulerRegistry } from '@nestjs/schedule';
+import { CronJob } from 'cron';
 
 @Injectable()
 export class FirebaseService {
   private readonly logger = new Logger(FirebaseService.name);
 
   constructor(
-    // @InjectRepository()
-    // private readonly userRepository: UserRepository,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly schedulerRegistry: SchedulerRegistry
   ) {
     const serviceAccount = require(join(
       __dirname,
@@ -25,6 +25,19 @@ export class FirebaseService {
     const credential = admin.credential.applicationDefault();
     const token = await credential.getAccessToken();
     return token.access_token;
+  }
+
+  async scheduleMessage(token: string, title: string, body: string, sendAt: Date): Promise<void> {
+    const job = new CronJob(sendAt, async () => {
+      await this.sendDirectTo(token, title, body);
+      this.schedulerRegistry.deleteCronJob(`send-message-${token}-${sendAt.getTime()}`);
+      this.logger.log(`Scheduled message sent to ${token} at ${sendAt}`);
+    });
+
+    this.schedulerRegistry.addCronJob(`send-message-${token}-${sendAt.getTime()}`, job);
+    job.start();
+
+    this.logger.log(`Scheduled message to ${token} at ${sendAt}`);
   }
 
   async sendDirectTo(token: string, title: string, body: string): Promise<void> {

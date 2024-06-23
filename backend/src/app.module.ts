@@ -25,6 +25,7 @@ import { TodoController } from './todo/todo.con';
 import { TodoRepository } from './todo/todo.repo';
 import { TodoService } from './todo/todo.service';
 import { FirebaseService } from './firebase/firebase.service';
+import { SchedulerRegistry } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -53,7 +54,7 @@ import { FirebaseService } from './firebase/firebase.service';
     ChatRepository, ChatService, GptService,
     CalendarRepository, CalendarService,
     TodoRepository, TodoService,
-    FirebaseService
+    FirebaseService, SchedulerRegistry
   ],
 })
 export class AppModule {}
