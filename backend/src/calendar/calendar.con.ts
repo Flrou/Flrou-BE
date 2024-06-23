@@ -68,16 +68,4 @@ export class CalendarController {
   getGraph(@Param('user_id') user_id: string, @Param('s_year') s_year: number, @Param('cur_month') cur_month: number) {
     return this.calendarService.findGraph(user_id, s_year, cur_month);
   }
-
-  // FCM
-  @Post('send')
-  async send(
-    @Body('user_id') user_id: string,
-    @Body('title') title: string,
-    @Body('body') body: string,
-  ) {
-
-    const res = this.calendarService.sendDirectTo(user_id, title, body);
-    return res;
-  }
 }

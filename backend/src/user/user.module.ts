@@ -8,10 +8,11 @@ import { Calendar } from "src/calendar/calendar.entity";
 import { CalendarService } from "src/calendar/calendar.service";
 import { CalendarRepository } from "src/calendar/calendar.repo";
 import { FirebaseService } from "src/firebase/firebase.service";
+import { SchedulerRegistry } from '@nestjs/schedule';
 
 @Module({
     imports : [SequelizeModule.forFeature([User, Calendar])],
-    providers : [UserRepository, UserService, CalendarService, CalendarRepository, FirebaseService],
+    providers : [UserRepository, UserService, CalendarService, CalendarRepository, FirebaseService, SchedulerRegistry],
     controllers : [UserController],
     exports : [SequelizeModule]
 })
