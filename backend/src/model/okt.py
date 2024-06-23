@@ -1,16 +1,4 @@
 from konlpy.tag import Okt
-# from flask import Flask, jsonify
-
-# app = Flask(__name__)
-
-# @app.route('/get', methods=['GET'])
-# def get_data():
-#     # 여기에서 데이터 처리 로직을 수행
-#     data = {'message': 'Hello from Python!'}
-#     return jsonify(data)
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
 
 import sys
 

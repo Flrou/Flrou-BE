@@ -1,4 +1,4 @@
-import { AutoIncrement, BelongsTo, Column, DataType, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AutoIncrement, BelongsTo, Column, DataType, HasMany, Model, PrimaryKey, Table, ForeignKey } from "sequelize-typescript";
 import { User } from "src/user/user.entity";
 
 @Table({timestamps : true})
@@ -14,6 +14,10 @@ export class Chat extends Model {
     @Column({type: DataType.INTEGER})
     isUser: number;
 
-    @BelongsTo(() => User, {foreignKey : 'user_id'})
+    @ForeignKey(() => User)
+    @Column
+    userId: number;
+
+    @BelongsTo(() => User, { foreignKey: 'userId' })
     user: User;
 }

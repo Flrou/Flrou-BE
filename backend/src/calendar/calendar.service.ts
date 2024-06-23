@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CalendarRepository } from './calendar.repo';
 import { Calendar } from './calendar.entity';
+import { User } from 'src/user/user.entity';
+import { FirebaseService } from 'src/firebase/firebase.service';
 
 @Injectable()
 export class CalendarService {
   constructor(
     private readonly calendarRepository: CalendarRepository,
+    private readonly firebaseService: FirebaseService
   ) {}
 
     async findAllByYear(user_id: string, s_year: number): Promise<Calendar[]> {
@@ -58,5 +61,13 @@ export class CalendarService {
 
     async setForceAlarm(user_id: string, cur_year: number, cur_month: number, alarm: number): Promise<any> {
       return this.calendarRepository.setForceAlarm(user_id, cur_year, cur_month, alarm);
+    }
+
+
+    // FCM
+    async sendDirectTo(user_id: string, title: string, body: string): Promise<any> {
+      const user = await User.findOne({where : {user_id}});
+      const res = this.firebaseService.sendDirectTo(user.device_token, title, body);
+      return res;
     }
 }

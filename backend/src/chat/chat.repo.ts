@@ -13,16 +13,12 @@ export class ChatRepository {
   // 전체 대화 반환
   async findAll(user_id: string): Promise<Chat[]> {
     const user = await User.findOne({ where: { user_id } });
-    return this.chatModel.findAll({where : {user_id : user.id}});
+    return this.chatModel.findAll({where : {userId : user.id}});
   }
 
   // 채팅 추가
   async create(user_id: string, content: string, isUser: number): Promise<void> {
     const user = await User.findOne({ where: { user_id } });
-    // if (!user) {
-    //   throw new Error(`${user_id} not found`);
-    // }
-    // await this.chatModel.create({ content, user_id: user.id, isUser });
     await this.chatModel.create({ content, isUser, userId : user.id });
   }
 }

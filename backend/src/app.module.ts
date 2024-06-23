@@ -24,6 +24,7 @@ import { TodoModule } from './todo/todo.module';
 import { TodoController } from './todo/todo.con';
 import { TodoRepository } from './todo/todo.repo';
 import { TodoService } from './todo/todo.service';
+import { FirebaseService } from './firebase/firebase.service';
 
 @Module({
   imports: [
@@ -44,7 +45,7 @@ import { TodoService } from './todo/todo.service';
       synchronize : true, // 처음 table 생성한 뒤에는 false로 변경
       autoLoadModels: true,
     }),
-    User, UserModule, Chat, ChatModule, Calendar, CalendarModule, Todo, TodoModule
+    User, UserModule, Chat, ChatModule, Calendar, CalendarModule, Todo, TodoModule,
   ],
   controllers: [UserController, ChatController, CalendarController, TodoController],
   providers: [
@@ -52,6 +53,7 @@ import { TodoService } from './todo/todo.service';
     ChatRepository, ChatService, GptService,
     CalendarRepository, CalendarService,
     TodoRepository, TodoService,
+    FirebaseService
   ],
 })
 export class AppModule {}
