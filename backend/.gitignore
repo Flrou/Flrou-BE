@@ -1,3 +1,6 @@
+# Firebase key
+/src/firebase/admin_private_key
+
 # compiled output
 /dist
 /node_modules

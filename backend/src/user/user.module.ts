@@ -7,10 +7,11 @@ import { UserRepository } from "./user.repo";
 import { Calendar } from "src/calendar/calendar.entity";
 import { CalendarService } from "src/calendar/calendar.service";
 import { CalendarRepository } from "src/calendar/calendar.repo";
+import { FirebaseService } from "src/firebase/firebase.service";
 
 @Module({
     imports : [SequelizeModule.forFeature([User, Calendar])],
-    providers : [UserRepository, UserService, CalendarService, CalendarRepository],
+    providers : [UserRepository, UserService, CalendarService, CalendarRepository, FirebaseService],
     controllers : [UserController],
     exports : [SequelizeModule]
 })

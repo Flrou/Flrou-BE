@@ -31,12 +31,12 @@ export class User extends Model {
     chat: Chat[];
 
     // nest 시작과 동시에 디폴트 데이터 넣어주기
-    @AfterSync
-    static async insertInitialData() {
-        const count = await User.count();
-        if (count === 0) {
-            const hash = bcrypt.hashSync('123', 10);
-            await User.create({ user_id: '123', user_pw: hash, nickname: '눈송이' });
-        }
-    }
+    // @AfterSync
+    // static async insertInitialData() {
+    //     const count = await User.count();
+    //     if (count === 0) {
+    //         const hash = bcrypt.hashSync('123', 10);
+    //         await User.create({ user_id: '123', user_pw: hash, nickname: '눈송이' });
+    //     }
+    // }
 }

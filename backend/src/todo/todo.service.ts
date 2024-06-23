@@ -8,7 +8,7 @@ export class TodoService {
     private readonly todoRepository: TodoRepository,
   ) {}
 
-    async findAll(user_id: string): Promise<Todo[]> {
+    async findAll(user_id: string): Promise<any> {
       return this.todoRepository.findAll(user_id);
     }
 

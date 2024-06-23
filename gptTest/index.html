@@ -19,6 +19,13 @@
     <button id="graphBtn">그래프</button>
 </body>
 <script>
+    document.getElementById("graphBtn").addEventListener("click", async () => {
+        let res = await axios.post('http://localhost:3000/chat/send', {
+            user_id : '123',
+            content : '내일 오후 10시에 회의가 있어',
+            mode : 1
+        })
+    })
     // document.getElementById("btn").addEventListener("click", async () => {
     //     let text = document.getElementById("content").value;
     //     console.log(text);
@@ -40,11 +47,11 @@
     //     answerDiv.innerHTML = JSON.stringify(res);
     // })
 
-    document.getElementById("graphBtn").addEventListener("click", async () => {
-        console.log('??')
-        const response = await axios.get('http://localhost:3000/plan/getGraph/sookmyung/2024/6');
-        console.log(response);
-    }) 
+    // document.getElementById("graphBtn").addEventListener("click", async () => {
+    //     console.log('??')
+    //     const response = await axios.get('http://localhost:3000/plan/getGraph/sookmyung/2024/6');
+    //     console.log(response);
+    // }) 
 
 </script>
 </html>

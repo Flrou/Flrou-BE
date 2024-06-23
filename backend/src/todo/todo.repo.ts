@@ -11,9 +11,11 @@ export class TodoRepository {
   ) {}
 
   // 전체 투두 반환
-  async findAll(user_id: string): Promise<Todo[]> {
+  async findAll(user_id: string): Promise<any> {
     const user = await User.findOne({ where: { user_id } });
-    return this.todoModel.findAll({where : {userId : user.id}});
+    const activate = await this.todoModel.findAll({where : {userId : user.id, isDone : false}})
+    const nonActivate = await this.todoModel.findAll({where : {userId : user.id, isDone : true}})
+    return {activate, nonActivate};
   }
 
   // 투두 추가

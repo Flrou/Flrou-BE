@@ -1,9 +1,13 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { CalendarService } from './calendar.service';
+import { FirebaseService } from 'src/firebase/firebase.service';
 
 @Controller('plan')
 export class CalendarController {
-  constructor(private readonly calendarService: CalendarService) {}
+  constructor(
+    private readonly calendarService: CalendarService,
+    private readonly firebaseService: FirebaseService
+  ) {}
 
   // 연별 일정 조회
   @Get('getPlanByYear/:user_id/:s_year')
@@ -63,5 +67,17 @@ export class CalendarController {
   @Get('getGraph/:user_id/:s_year/:cur_month')
   getGraph(@Param('user_id') user_id: string, @Param('s_year') s_year: number, @Param('cur_month') cur_month: number) {
     return this.calendarService.findGraph(user_id, s_year, cur_month);
+  }
+
+  // FCM
+  @Post('send')
+  async send(
+    @Body('user_id') user_id: string,
+    @Body('title') title: string,
+    @Body('body') body: string,
+  ) {
+
+    const res = this.calendarService.sendDirectTo(user_id, title, body);
+    return res;
   }
 }
