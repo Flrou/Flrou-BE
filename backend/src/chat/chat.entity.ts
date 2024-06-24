@@ -14,6 +14,9 @@ export class Chat extends Model {
     @Column({type: DataType.INTEGER})
     isUser: number;
 
+    @Column({type: DataType.INTEGER}) // 대화 타입
+    chatType: number; // 0: 일반 대화, 1: 캘린더, 2: 투두
+
     @ForeignKey(() => User)
     @Column
     userId: number;

@@ -20,18 +20,18 @@ export class ChatService {
     }
 
     async createChat(user_id: string, content: string, mode: number, alarm: number | null): Promise<any> {
-      // 사용자 대화 저장
-      await this.chatRepository.create(user_id, content, 0);
-      console.log(mode);
-
+      // 사용자 대화 타입
+      console.log('chat type: ', mode);
+      await this.chatRepository.create(content, 0, mode, user_id);
+      
+      // 일반대화 -> 일반 gpt
       if(mode == 0) {
-        // 일반대화 -> 일반 gpt
         const generatedText = await this.gptService.generateText(content);
-        await this.chatRepository.create(user_id, generatedText, 1);
+        await this.chatRepository.create(generatedText, 1, mode, user_id);
         return generatedText;
 
+      // 캘린더
       }else if(mode == 1) {
-
         try {
           const {data} = await axios.post('http://127.0.0.1:8000/ner', { content });
           if(data[3] == null) {

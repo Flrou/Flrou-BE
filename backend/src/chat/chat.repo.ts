@@ -17,8 +17,8 @@ export class ChatRepository {
   }
 
   // 채팅 추가
-  async create(user_id: string, content: string, isUser: number): Promise<void> {
+  async create(content: string, isUser: number, chatType: number, user_id: string): Promise<void> {
     const user = await User.findOne({ where: { user_id } });
-    await this.chatModel.create({ content, isUser, userId : user.id });
+    await this.chatModel.create({ content, isUser, chatType, userId : user.id });
   }
 }
