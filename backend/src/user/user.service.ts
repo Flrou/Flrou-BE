@@ -56,13 +56,15 @@ export class UserService {
       }
     }
 
-    async setForce(user_id: string, cur_year: number, cur_month: number, alarm: number): Promise<any> {
+    async setForce(user_id: string, cur_year: number, cur_month: number, cur_day: number, alarm: number): Promise<any> {
+      console.log('들어왔니?', user_id)
       try {
         // force 설정 (true/false)
         const setting = await this.userRepository.setForce(user_id);
+        console.log('바뀐 세팅: ', setting)
         // 강제 알림
         if(setting) { // force == true
-          await this.calendarService.setForceAlarm(user_id, cur_year, cur_month, alarm);
+          await this.calendarService.setForceAlarm(user_id, cur_year, cur_month, cur_day, alarm);
         }else { // force == false
           
         }

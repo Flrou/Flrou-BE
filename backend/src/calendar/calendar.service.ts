@@ -69,8 +69,8 @@ export class CalendarService {
 
     // --- force
 
-    async setForceAlarm(user_id: string, cur_year: number, cur_month: number, alarm: number): Promise<any> {
-      const {user, updated} = await this.calendarRepository.setForceAlarm(user_id, cur_year, cur_month, alarm);
+    async setForceAlarm(user_id: string, cur_year: number, cur_month: number, cur_day: number, alarm: number): Promise<any> {
+      const {user, updated} = await this.calendarRepository.setForceAlarm(user_id, cur_year, cur_month, cur_day, alarm);
       for (const calendar of updated) {
         const sendAt = new Date(cur_year, cur_month - 1, calendar.s_day, calendar.s_hour, calendar.s_minute)
         sendAt.setMinutes(sendAt.getMinutes() - alarm);

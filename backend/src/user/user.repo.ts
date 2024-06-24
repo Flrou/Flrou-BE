@@ -40,7 +40,8 @@ export class UserRepository {
   async setForce(user_id: string): Promise<any> {
     const user = await this.findOneByUserId(user_id);
     const newForceValue = !user.force;
-    await this.userModel.update({ force: newForceValue }, { where: { userId: user.id } });
+    await this.userModel.update({ force: newForceValue }, { where: { user_id } });
+    console.log('바뀐 force : ', newForceValue)
     return newForceValue;
 }
 

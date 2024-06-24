@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 import { Calendar } from './calendar.entity';
 import { User } from 'src/user/user.entity';
 import { adminApp } from '../firebase/firebase.config';
@@ -116,7 +116,7 @@ export class CalendarRepository {
   }
 
   // 강제 알림 설정
-  async setForceAlarm(user_id: string, cur_year: number, cur_month: number, alarm: number): Promise<any> {
+  async setForceAlarm(user_id: string, cur_year: number, cur_month: number, cur_day: number, alarm: number): Promise<any> {
     const user = await User.findOne({ where: { user_id } });
     try {
       await Calendar.update({
@@ -126,13 +126,19 @@ export class CalendarRepository {
           userId : user.id,
           s_year : cur_year,
           s_month : cur_month,
+          s_day: {
+            [Op.gt]: cur_day
+          }
         }
       })
       const updatedCalendar = await Calendar.findAll({
         where : {
           userId : user.id,
           s_year : cur_year,
-          s_month : cur_month
+          s_month : cur_month,
+          s_day: {
+            [Op.gt]: cur_day
+          }
         }
       })
       
