@@ -27,12 +27,14 @@ export class User extends Model {
     device_token: string;
 
     // nest 시작과 동시에 디폴트 데이터 넣어주기
-    // @AfterSync
-    // static async insertInitialData() {
-    //     const count = await User.count();
-    //     if (count === 0) {
-    //         const hash = bcrypt.hashSync('123', 10);
-    //         await User.create({ user_id: '123', user_pw: hash, nickname: '눈송이' });
-    //     }
-    // }
+    @AfterSync
+    static async insertInitialData() {
+        const count = await User.count();
+        if (count === 0) {
+            const hash = bcrypt.hashSync('123', 10);
+            const hash2 = bcrypt.hashSync('456', 10);
+            await User.create({ user_id: 'yj123', user_pw: hash, nickname: '유진' });
+            await User.create({ user_id: 'sh456', user_pw: hash2, nickname: '서현' });
+        }
+    }
 }

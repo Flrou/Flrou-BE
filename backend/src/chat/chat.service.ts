@@ -26,9 +26,22 @@ export class ChatService {
       
       // 일반대화 -> 일반 gpt
       if(mode == 0) {
-        const generatedText = await this.gptService.generateText(content);
-        await this.chatRepository.create(generatedText, 1, mode, user_id);
-        return generatedText;
+        const res = await this.gptService.generateText(content);
+        const generatedText = JSON.parse(res);
+        function isObjectWithValues(obj: unknown): obj is Record<string, any> {
+          return obj !== null && typeof obj === 'object' && !Array.isArray(obj);
+      }
+      // 객체의 첫 번째 값만 가져오기
+      let extractedText: string = "";
+      
+      if (isObjectWithValues(generatedText)) {
+          const values = Object.values(generatedText);
+          if (values.length > 0 && typeof values[0] === 'string') {
+              extractedText = values[0];
+          }
+      }
+      await this.chatRepository.create(extractedText, 1, mode, user_id);
+      return extractedText;
 
       // 캘린더
       }else if(mode == 1) {
