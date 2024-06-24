@@ -61,7 +61,7 @@ export class ChatService {
               }
               console.log(returnData)
 
-              if(data) {
+              if(okt_res) {
                 returnData.plan = okt_res.toString();
                 console.log(returnData)
                 resolve(returnData);
