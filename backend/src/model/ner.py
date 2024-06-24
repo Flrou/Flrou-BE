@@ -286,7 +286,7 @@ def extract_schedule_info(sentence,event):
         # 종료 기간을 추출하는 정규표현식
         end_time_pattern = r'(?:(어제|오늘|내일|모레|다음주|다다음주|\d+년|\d{8}|\d{7}|\d{6}|\d{5}|\d{4}))?(?:(월|화|수|목|금|토|일|월요일|화요일|수요일|목요일|금요일|토요일|일요일))?(?:(\d+)월)?(?:(\d+)일)?(?:(오전|오후|새벽|밤|낮|저녁|아침))?(?:(\d+)시)?(?:(반|\d+분))?(까지)' # 종료 기간 추출
         end_match = re.search(end_time_pattern, text)
-        if end_match:
+        if end_match.group(1) and end_match.group(1).isdigit():
             fyear = end_match.group(1) if end_match.group(1) and end_match.group(1).isdigit() else syear  # 종료 년도를 추출합니다.
             fmonth = end_match.group(3).strip("월") if end_match.group(3) else smonth
             fday = end_match.group(4).strip("일") if end_match.group(4) else sday
