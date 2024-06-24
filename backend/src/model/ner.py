@@ -48,7 +48,7 @@ def ner():
     tokenized_text, rest = ner_inference(text)
     result = extract_schedule_info(tokenized_text, rest)
     print(result)
-    return jsonify(result) 
+    return jsonify(result)
 
 def ner_inference(text):
     model.eval()
@@ -128,7 +128,7 @@ def extract_schedule_info(sentence,event):
         syear = match.group(1) if match.group(1) else datetime.now().year  # 년도를 추출합니다. 년도가 없으면 기본값으로 2024를 사용합니다.
         smonth = match.group(3).strip("월") if match.group(3) else datetime.now().month
         sday = match.group(4).strip("일") if match.group(4) else datetime.now().day
-        sdow = match.group(2) 
+        sdow = match.group(2)
         
         if match.group(1) and match.group(1).isdigit():
             if len(match.group(1)) == 8:  # yyyyddmm 형식
@@ -279,7 +279,6 @@ def extract_schedule_info(sentence,event):
         
         if (stime_period == '오후' or stime_period == '저녁' or stime_period == '밤' or stime_period == '낮') and int(shour) < 12:
             shour = int(shour) + 12
-        sminute = int(match.group(7).strip("분")) if match.group(7) else 0
         if match.group(7) and '반' in match.group(7):
             sminute = 30
         elif match.group(7):
@@ -290,14 +289,14 @@ def extract_schedule_info(sentence,event):
         # 종료 기간을 추출하는 정규표현식
         end_time_pattern = r'(?:(어제|오늘|내일|모레|다음주|다다음주|\d+년|\d{8}|\d{7}|\d{6}|\d{5}|\d{4}))?(?:(월|화|수|목|금|토|일|월요일|화요일|수요일|목요일|금요일|토요일|일요일))?(?:(\d+)월)?(?:(\d+)일)?(?:(오전|오후|새벽|밤|낮|저녁|아침))?(?:(\d+)시)?(?:(반|\d+분))?(까지)' # 종료 기간 추출
         end_match = re.search(end_time_pattern, text)
-        if end_match.group(1) and end_match.group(1).isdigit():
+        if end_match:
             fyear = end_match.group(1) if end_match.group(1) and end_match.group(1).isdigit() else syear  # 종료 년도를 추출합니다.
             fmonth = end_match.group(3).strip("월") if end_match.group(3) else smonth
             fday = end_match.group(4).strip("일") if end_match.group(4) else sday
             ftime_period = end_match.group(5)
             fhour = int(end_match.group(6).strip("시")) if end_match.group(6) else 0
             
-            if end_match.group(1).isdigit():
+            if end_match.group(1) and end_match.group(1).isdigit():
                 if len(end_match.group(1)) == 8:  # yyyyddmm 형식
                     fyear = int(end_match.group(1)[:4])
                     fmonth = int(end_match.group(1)[4:6])
@@ -412,20 +411,23 @@ def extract_schedule_info(sentence,event):
                  
             if (ftime_period == '오후' or ftime_period == '저녁' or ftime_period == '밤' or ftime_period == '낮') and int(fhour) < 12:
                 fhour = int(fhour) + 12
+                
             
-                if end_match.group(7) and '반' in end_match.group(7):
-                    fminute = 30
-                elif end_match.group(7):
-                    fminute = int(end_match.group(7).strip("분"))
-                else:
-                    fminute = 0
+            if end_match.group(7) and '반' in end_match.group(7):
+                fminute = 30
+            elif end_match.group(7):
+                fminute = int(end_match.group(7).strip("분"))
+            else:
+                fminute = 0
+
+                
         
         else:
             fyear, fmonth, fday, ftime_period, fhour, fminute = syear, smonth, sday, stime_period, shour, sminute
 
-        return [syear, smonth, sday, stime_period, shour, sminute, fyear, fmonth, fday,ftime_period,  fhour, fminute, event]
+        return syear, smonth, sday, stime_period, shour, sminute, fyear, fmonth, fday,ftime_period,  fhour, fminute,event
     else:
-        return [None, None, None, None, None, None, None,None, None, None, None, None,None]
+        return None, None, None, None, None, None, None,None, None, None, None, None,None
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000)
@@ -441,3 +443,7 @@ if __name__ == '__main__':
 # result = ner_inference(text)
 # result2 = extract_schedule_info(result[0], result[1])
 # print(result2)
+
+
+
+
