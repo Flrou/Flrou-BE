@@ -282,6 +282,10 @@ def extract_schedule_info(sentence,event):
         sminute = int(match.group(7).strip("분")) if match.group(7) else 0
         if match.group(7) and '반' in match.group(7):
             sminute = 30
+        elif match.group(7):
+            sminute = int(match.group(7).strip("분"))
+        else:
+            sminute = 0
         
         # 종료 기간을 추출하는 정규표현식
         end_time_pattern = r'(?:(어제|오늘|내일|모레|다음주|다다음주|\d+년|\d{8}|\d{7}|\d{6}|\d{5}|\d{4}))?(?:(월|화|수|목|금|토|일|월요일|화요일|수요일|목요일|금요일|토요일|일요일))?(?:(\d+)월)?(?:(\d+)일)?(?:(오전|오후|새벽|밤|낮|저녁|아침))?(?:(\d+)시)?(?:(반|\d+분))?(까지)' # 종료 기간 추출
@@ -408,12 +412,13 @@ def extract_schedule_info(sentence,event):
                  
             if (ftime_period == '오후' or ftime_period == '저녁' or ftime_period == '밤' or ftime_period == '낮') and int(fhour) < 12:
                 fhour = int(fhour) + 12
-                
-            fminute = end_match.group(7).strip("분") if end_match.group(7) else 0
-            if end_match.group(7) and '반' in end_match.group(7):
-                fminute = 30
-
-                
+            
+                if end_match.group(7) and '반' in end_match.group(7):
+                    fminute = 30
+                elif end_match.group(7):
+                    fminute = int(end_match.group(7).strip("분"))
+                else:
+                    fminute = 0
         
         else:
             fyear, fmonth, fday, ftime_period, fhour, fminute = syear, smonth, sday, stime_period, shour, sminute
