@@ -26,10 +26,6 @@ export class User extends Model {
     @Column({type: DataType.STRING(500)})
     device_token: string;
 
-    // 유저가 가지고 있는 TBA
-    @HasMany(() => Chat, { foreignKey: 'user_id', as: 'userChat' })
-    chat: Chat[];
-
     // nest 시작과 동시에 디폴트 데이터 넣어주기
     // @AfterSync
     // static async insertInitialData() {

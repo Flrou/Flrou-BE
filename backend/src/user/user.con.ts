@@ -25,7 +25,7 @@ export class UserController {
 
   // 강제 알림 설정
   @Post('setForce')
-  setForce(@Body('user_id') user_id: string, @Body('cur_year') cur_year: number, @Body('cur_month') cur_month: number, alarm: number) {
+  setForce(@Body('user_id') user_id: string, @Body('cur_year') cur_year: number, @Body('cur_month') cur_month: number, @Body('alarm') alarm: number) {
     return this.userService.setForce(user_id, cur_year, cur_month, alarm);
   }
 

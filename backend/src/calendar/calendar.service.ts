@@ -25,7 +25,7 @@ export class CalendarService {
       f_year: number, f_month: number, f_day: number, f_hour: number, f_minute: number,
       alarm: number, color: number
     ): Promise<string|null> {
-      const res = await this.calendarRepository.create(
+      const user = await this.calendarRepository.create(
         user_id, plan, s_year, s_month, s_day, s_hour, s_minute,
         f_year, f_month, f_day, f_hour, f_minute, alarm, color
       );
@@ -35,10 +35,10 @@ export class CalendarService {
         const sendAt = new Date(s_year, s_month - 1, s_day, s_hour, s_minute)
         sendAt.setMinutes(sendAt.getMinutes() - alarm);
         console.log('메시지 예약 시간 : ', sendAt);
-        this.sendDirectTo(user_id, plan, `${alarm}분 전입니다.`, sendAt)
+        this.sendDirectTo(user_id, 'From Flrou', `${user.nickname}님, ${plan} ${alarm}분 전입니다.`, sendAt)
       }
 
-      return res;
+      return 'success';
     }
 
     async update(
@@ -70,11 +70,17 @@ export class CalendarService {
     // --- force
 
     async setForceAlarm(user_id: string, cur_year: number, cur_month: number, alarm: number): Promise<any> {
-      return this.calendarRepository.setForceAlarm(user_id, cur_year, cur_month, alarm);
+      const {user, updated} = await this.calendarRepository.setForceAlarm(user_id, cur_year, cur_month, alarm);
+      for (const calendar of updated) {
+        const sendAt = new Date(cur_year, cur_month - 1, calendar.s_day, calendar.s_hour, calendar.s_minute)
+        sendAt.setMinutes(sendAt.getMinutes() - alarm);
+        console.log('메시지 예약 시간 : ', sendAt);
+        this.sendDirectTo(user_id, 'From Flrou', `${user.nickname}님, ${calendar.plan} ${alarm}분 전입니다.`, sendAt)
+      }
+      return 'success';
     }
 
-
-    // FCM
+    // --- FCM
     async sendDirectTo(user_id: string, title: string, body: string, sendAt: Date): Promise<any> {
       const user = await User.findOne({where : {user_id}});
       const res = this.firebaseService.scheduleMessage(user.device_token, title, body, sendAt);

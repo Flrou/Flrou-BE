@@ -47,36 +47,14 @@ export class CalendarRepository {
     s_year: number, s_month: number, s_day: number, s_hour: number, s_minute: number,
     f_year: number, f_month: number, f_day: number, f_hour: number, f_minute: number,
     alarm: number, color: number
-  ): Promise<string|null> {
+  ): Promise<any> {
     const user = await User.findOne({ where: { user_id } });
-
-    // 1) FCM
-    // const message = {
-    //   "topic": "alarm",
-    //   "token": user.device_token,
-    //   "notification": {
-    //     "title": plan,
-    //     "body": `${alarm}분 전입니다.`
-    //   },
-    // }
-
-    // adminApp
-    //   .messaging()
-    //   .send(message)
-    //   .then(function (response) {
-    //     console.log('메시지 예약 성공')
-    //   })
-    //   .catch(function (error) {
-    //     console.log('메시지 예약 실패')
-    //   })
-
-    // 2) DB
     this.calendarModel.create({
       plan, s_year, s_month, s_day, s_hour, s_minute,
       f_year, f_month, f_day, f_hour, f_minute, alarm, color,
       userId: user.id
     })
-    return 'success'
+    return user
   }
   
   // 일정 수정
@@ -150,8 +128,15 @@ export class CalendarRepository {
           s_month : cur_month,
         }
       })
+      const updatedCalendar = await Calendar.findAll({
+        where : {
+          userId : user.id,
+          s_year : cur_year,
+          s_month : cur_month
+        }
+      })
       
-      return 'success';
+      return { user: user, updated: updatedCalendar };
     } catch (error) {
       console.log(error);
       return 'failed';
