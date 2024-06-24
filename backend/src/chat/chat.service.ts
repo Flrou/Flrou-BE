@@ -37,7 +37,9 @@ export class ChatService {
       if (isObjectWithValues(generatedText)) {
           const values = Object.values(generatedText);
           if (values.length > 0 && typeof values[0] === 'string') {
-              extractedText = values[0];
+              for (const value of values) {
+                extractedText += value;
+              }
           }
       }
       await this.chatRepository.create(extractedText, 1, mode, user_id);

@@ -35,7 +35,7 @@ export class CalendarService {
         const sendAt = new Date(s_year, s_month - 1, s_day, s_hour, s_minute)
         sendAt.setMinutes(sendAt.getMinutes() - alarm);
         console.log('메시지 예약 시간 : ', sendAt);
-        this.sendDirectTo(user_id, 'From Flrou', `${user.nickname}님, ${plan} ${alarm}분 전입니다.`, sendAt)
+        this.sendDirectTo(user_id, 'From Flrou', `${user.nickname}님, ${plan}${alarm}분 전입니다.`, sendAt)
       }
 
       return 'success';

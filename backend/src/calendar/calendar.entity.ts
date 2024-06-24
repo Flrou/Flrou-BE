@@ -82,7 +82,7 @@ export class Calendar extends Model {
                 plan: '프로젝트 회의',
                 s_year: 2024, s_month: 6, s_day: 12, s_hour: 22, s_minute: 0,
                 f_year: 2024, f_month: 6, f_day: 12, f_hour: 23, f_minute: 0,
-                isDone: true, userId: 1
+                color: 0, isDone: true, userId: 1
             });
             await Calendar.create({
                 plan: '기말 과제 제출',
@@ -93,8 +93,14 @@ export class Calendar extends Model {
             await Calendar.create({
                 plan: '코딩 테스트 공부',
                 s_year: 2024, s_month: 6, s_day: 26, s_hour: 17, s_minute: 0,
-                f_year: 2024, f_month: 6, f_day: 26, f_hour: 120, f_minute: 0,
+                f_year: 2024, f_month: 6, f_day: 26, f_hour: 20, f_minute: 0,
                 userId: 1
+            });
+            await Calendar.create({
+                plan: '프로젝트 회의',
+                s_year: 2024, s_month: 6, s_day: 27, s_hour: 22, s_minute: 0,
+                f_year: 2024, f_month: 6, f_day: 27, f_hour: 23, f_minute: 0,
+                color: 0, userId: 1
             });
             await Calendar.create({
                 plan: '종강 파티',
