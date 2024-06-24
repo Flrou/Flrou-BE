@@ -23,12 +23,12 @@ export class Todo extends Model {
     @BelongsTo(() => User, { foreignKey: 'userId' })
     user: User;
 
-    // @AfterSync
-    // static async insertInitialData() {
-    //     const count = await Todo.count();
-    //     if (count === 0) {
-    //         await Todo.create({ todo: '식당 예약', userId: 1 });
-    //         await Todo.create({ todo: '다이소', userId: 1 });
-    //     }
-    // }
+    @AfterSync
+    static async insertInitialData() {
+        const count = await Todo.count();
+        if (count === 0) {
+            await Todo.create({ todo: '식당 예약', userId: 2 });
+            await Todo.create({ todo: '다이소 옷걸이', userId: 2 });
+        }
+    }
 }

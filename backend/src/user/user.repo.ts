@@ -37,11 +37,12 @@ export class UserRepository {
   }
 
   // 강제 알림 설정
-  async setForce(user_id: string,): Promise<any> {
+  async setForce(user_id: string): Promise<any> {
     const user = await this.findOneByUserId(user_id);
-    await this.userModel.update({ force : !user.force }, { where : { userId : user.id } })
-    return !user.force;
-  }
+    const newForceValue = !user.force;
+    await this.userModel.update({ force: newForceValue }, { where: { userId: user.id } });
+    return newForceValue;
+}
 
   // 디바이스 토큰 저장
   async setDeviceToken(user_id: string, token: string): Promise<any> {
