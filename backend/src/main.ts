@@ -4,10 +4,11 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 
 // CORS 설정
 const corsOptions: CorsOptions = {
-  origin: ['http://flrou.site'], // 허용할 도메인
+  origin: ['https://flrou.site', '192.168.0.28'], // 허용할 도메인
   // origin: ['http://localhost:5500'], // 허용할 도메인
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // 허용할 HTTP 메서드
   allowedHeaders: ['Content-Type', 'Authorization'], // 허용할 헤더
+  credentials: true,
 };
 
 async function bootstrap() {
