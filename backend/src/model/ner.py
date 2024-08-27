@@ -3,7 +3,6 @@ import re
 import os
 
 import numpy as np
-from dateutil import parser
 from datetime import datetime, timedelta
 import torch
 from transformers import AutoTokenizer, AutoModelForTokenClassification
