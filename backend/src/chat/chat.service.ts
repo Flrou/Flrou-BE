@@ -114,7 +114,7 @@ export class ChatService {
             console.log(data.toString());
             this.todoService.create(user_id, data.toString());
           } else {
-            resolve('failed');
+            resolve(content);
           }
         });
 
