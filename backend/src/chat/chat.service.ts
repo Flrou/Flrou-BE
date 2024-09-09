@@ -64,7 +64,7 @@ export class ChatService {
         const plan = data.pop();
 
         return new Promise<any>((resolve, reject) => {
-          const pythonProcess = spawn('python', ['src/model/okt.py', plan]);
+          const pythonProcess = spawn('python3', ['src/model/okt.py', plan]);
 
           pythonProcess.stdout.on('data', (okt_res) => {
             let returnData = {
