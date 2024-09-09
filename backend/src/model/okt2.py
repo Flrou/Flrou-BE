@@ -1,6 +1,5 @@
-from konlpy.tag import Okt
-
 import sys
+from konlpy.tag import Okt
 
 def extract_named_entities(input):
     okt = Okt()
