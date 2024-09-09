@@ -106,7 +106,10 @@ export class ChatService {
     } else if (mode == 2) {
       // 투두 리스트
       return new Promise<string>((resolve, reject) => {
-        const pythonProcess = spawn('python3', ['src/model/okt2.py', content]);
+        const pythonProcess = spawn(
+          '/home/damin/miniconda3/envs/flrouNER2/bin/python3',
+          ['src/model/okt2.py', content],
+        );
 
         pythonProcess.stdout.on('data', (data) => {
           if (data) {
