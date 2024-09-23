@@ -179,6 +179,7 @@ export class CalendarRepository {
     alarm: number,
   ): Promise<any> {
     const user = await User.findOne({ where: { user_id } });
+    console.log(user_id, cur_year, cur_month, cur_day, alarm);
     try {
       await Calendar.update(
         {
